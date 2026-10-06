@@ -1,0 +1,1113 @@
+{
+  "name": "IT-Support-Automatisierung",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "IT-Support-Anfrage",
+        "formDescription": "Sie haben ein IT Problem? Wir helfen gerne. Nennen Sie uns dafür bitte Ihr Problem und eine Kontakt E-Mailadresse. ",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Problem",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "E-Mail",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        0,
+        0
+      ],
+      "id": "0c6f8e15-8030-459c-8f97-4f6c795f070d",
+      "name": "IT-Support-Anfrage",
+      "webhookId": "5e4e7563-876c-4d1f-af46-63ceb630be0a"
+    },
+    {
+      "parameters": {
+        "content": "## Eingang",
+        "height": 416,
+        "color": 3
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        -96,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "c9468724-dea2-4743-abb3-2e74ff8831e8",
+      "name": "Sticky Note"
+    },
+    {
+      "parameters": {
+        "content": "## Eingangsbestätigung und Ticketvergabe",
+        "height": 416,
+        "width": 336
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        208,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "3f9dd854-cc4d-4b8c-85c7-963124e5911b",
+      "name": "Sticky Note1"
+    },
+    {
+      "parameters": {
+        "content": "## Lesen, Verstehen, Priorisieren, Zuordnen",
+        "height": 416,
+        "width": 368,
+        "color": 4
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        608,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "9b0de67c-7a88-4dd2-91d3-6328b7c68a90",
+      "name": "Sticky Note2"
+    },
+    {
+      "parameters": {
+        "content": "## Suche nach ähnlichen oder gleichen Problemen",
+        "height": 416,
+        "width": 528,
+        "color": 5
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1024,
+        -224
+      ],
+      "typeVersion": 1,
+      "id": "80d95c10-787b-4271-aa7a-334c23f03bbb",
+      "name": "Sticky Note3"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 3
+          },
+          "conditions": [
+            {
+              "id": "96a9bf2a-93d9-495b-932e-a60f13be213c",
+              "leftValue": "={{ $json.output.bekanntes_problem }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.3,
+      "position": [
+        1392,
+        -32
+      ],
+      "id": "85038ab0-fc72-4c5a-83d3-ae07750fc4c3",
+      "name": "If bekanntes Problem"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Analysiere die aktuelle Anfrage {{ $('IT-Support-Anfrage').item.json.Problem }}. Gib anhand des folgenden JSON Arrays aus ähnlichen Anfragen und deren Lösungen einen Lösungsvorschlag für die aktuelle Anfrage. Nenne die Ticketnummern der Anfragen auf die du dich mit dem Lösungsvorschlag beziehst. \n\nÄhnliche Probleme: {{ JSON.stringify($json.output.aehnliche_probleme, null, 2) }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1648,
+        48
+      ],
+      "id": "be62e4cb-afbc-4193-93e7-656bfbd253ed",
+      "name": "AI Agent2"
+    },
+    {
+      "parameters": {
+        "content": "## Lösungsvorschlag",
+        "height": 240,
+        "width": 384,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1584,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "33e9eb83-3b3a-4f5e-a1ab-5aa3e0963cbf",
+      "name": "Sticky Note4"
+    },
+    {
+      "parameters": {
+        "content": "## Automatische Antwort",
+        "height": 240,
+        "width": 640,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        1584,
+        -256
+      ],
+      "typeVersion": 1,
+      "id": "662dfc71-f08d-467a-b78a-e10e28d80503",
+      "name": "Sticky Note5"
+    },
+    {
+      "parameters": {
+        "content": "## Weiterleitung",
+        "height": 240,
+        "width": 224,
+        "color": 6
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2000,
+        0
+      ],
+      "typeVersion": 1,
+      "id": "a9d674d2-aa97-4ef4-8ec1-ecc7697f6279",
+      "name": "Sticky Note6"
+    },
+    {
+      "parameters": {
+        "content": "## auf Bearbeitung und Ticket Schließung warten",
+        "height": 320,
+        "width": 352,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2256,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "d9ab21e5-f861-4586-a1ad-0a3b57f51ce1",
+      "name": "Sticky Note7"
+    },
+    {
+      "parameters": {
+        "content": "## Ticket schließen und archivieren",
+        "height": 320,
+        "width": 352,
+        "color": 7
+      },
+      "type": "n8n-nodes-base.stickyNote",
+      "position": [
+        2640,
+        -192
+      ],
+      "typeVersion": 1,
+      "id": "a8a7c4e3-3f9c-4967-bbc4-4c93d3689f7c",
+      "name": "Sticky Note8"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Du bist IT-Support-Mitarbeiter. Schreibe eine höflich und sachliche Email Antwort auf die Anfrage: {{ $('IT-Support-Anfrage').item.json.Problem }}\n\nLeite die Lösung des Problems aus folgendem JSON Array gleicher, bereits gelöster Problemen ab: {{ JSON.stringify($json.output.gleiche_probleme, null, 2) }}\n\nErfinde keinen und füge keinen eigenen Lösungsansatz hinzu.\nBeginne die Mail mit \"Sehr geehrte/r {{ $('IT-Support-Anfrage').item.json[\"E-Mail\"] }},\" und beende sie mit \"Mit freundlichen Grüßen,\nIhr IT-Support-Team\"\n\nGib keine zusätzlichen Erklärungen und keinen Text abgesehen von der Antwort aus. \n\n\n",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1616,
+        -192
+      ],
+      "id": "01e23585-222f-466d-9cd3-fb9e4e803737",
+      "name": "AI Agent3"
+    },
+    {
+      "parameters": {
+        "mode": "raw",
+        "jsonOutput": "={\n  \"TicketID\": {{$execution.id}}\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6cf30363-3f0e-491f-9c4d-22b039042083",
+      "name": "Ticket-ID"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        624,
+        224
+      ],
+      "id": "c7349990-8868-4814-a4d3-dcddd7283d44",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "YTwJFeJoGqV2Wnlj",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "  {\n      \"problemZusammenfassung\": \"Kunde bemängelt einen Tippfehler in der Rechnungsadresse.\",\n      \"kategorie\": \"Rechnungen\",\n      \"zustaendigePerson\": \"Anna Schmidt\",\n      \"priorisierungsscore\": 3\n      \n    }"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        800,
+        224
+      ],
+      "id": "5f1e2f67-a7f6-4abc-b46c-15e06e127196",
+      "name": "Structured Output Parser"
+    },
+    {
+      "parameters": {
+        "fromEmail": "IT-Support<tadea.s@gmx.de>",
+        "toEmail": "={{ $('IT-Support-Anfrage').item.json['E-Mail'] }}",
+        "subject": "=IT-Support Ticketnummer:  {{ $json.TicketID }}",
+        "emailFormat": "text",
+        "text": "=Dies ist eine automatische Eingangsbestätigung Ihrer IT-Support-Anfrage. \n\nIhre Anfrage hat die Ticketnummer {{ $json.TicketID }} erhalten. \n\nWir bitten um Geduld werden uns schnellstmöglich um Ihr Anliegen kümmern.\n\n\nViele Grüße\nIhr IT-Team",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        400,
+        -144
+      ],
+      "id": "5d3acd08-ea63-446e-88c5-9d940d617cd4",
+      "name": "Eingangsbestätigung",
+      "webhookId": "59a2e311-0f3f-4158-98aa-d7246bc27ccd",
+      "credentials": {
+        "smtp": {
+          "id": "QeQUjRMlAXPy3bfA",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "Gw2uOHZBbZHjHBuy",
+          "mode": "list",
+          "cachedResultName": "aktuelle_IT-Support-Anfragen",
+          "cachedResultUrl": "/projects/vTXwyz2ECDJVPGHx/datatables/Gw2uOHZBbZHjHBuy"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "TicketID": "={{ $('Ticket-ID').item.json.TicketID }}",
+            "Anfrage": "={{ $('IT-Support-Anfrage').item.json.Problem }}",
+            "KontaktEmail": "={{ $('IT-Support-Anfrage').item.json['E-Mail'] }}",
+            "ProblemZusammenfassung": "={{ $json.output.problemZusammenfassung }}",
+            "Kategorie": "={{ $json.output.kategorie }}",
+            "zustaendigePerson": "={{ $json.output.zustaendigePerson }}",
+            "Priorisierung": "={{ $json.output.priorisierungsscore }}",
+            "Status": "eingegangen"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "TicketID",
+              "displayName": "TicketID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "KontaktEmail",
+              "displayName": "KontaktEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Anfrage",
+              "displayName": "Anfrage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ProblemZusammenfassung",
+              "displayName": "ProblemZusammenfassung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Kategorie",
+              "displayName": "Kategorie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "zustaendigePerson",
+              "displayName": "zustaendigePerson",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Priorisierung",
+              "displayName": "Priorisierung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        832,
+        -144
+      ],
+      "id": "eae88522-7e47-4958-b562-7c9462366612",
+      "name": "add to Anfragentabelle"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-20b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        496
+      ],
+      "id": "6087c1c6-4856-478b-8822-a18e06d0675c",
+      "name": "Groq Chat Model1",
+      "credentials": {
+        "groqApi": {
+          "id": "YTwJFeJoGqV2Wnlj",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Du bist IT-Support Mitarbeiter und erhälst folgende Anfrage: {{ $('IT-Support-Anfrage').item.json.Problem }}.\nFasse das in der Anfrage beschriebene Problem kurz zusammen, finde eine passende Kategorie, ordne eine zuständige Person zu und gib ihm einen Priorisierungsscore von 1 (unwichtig/hat zeit) bis 10 (ganz dringend und wichtig).\n\nHier sind die zur Verfügung stehenden Personen und ihre Fachbereiche:\nMax Mustermann: Login Probleme, Software\nHubert Kunst: Hardware, Lizensen\nPippi Langstrumpf: alles andere\n\n\nGib deine Antwort in folgendem JSON format wieder:\n\n{\n      \"problemZusammenfassung\": \"...\",\n      \"kategorie\": \"...\",\n      \"zustaendigePerson\": \"...\",\n      \"priorisierungsscore\": \n    }",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        624,
+        0
+      ],
+      "id": "67d08dbd-b4ec-497b-ae58-673e0bfc58db",
+      "name": "Kategorisierung und Zuordnung"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Du bist ein AI-Agent zur Unterstützung eines IT-Support-Teams.\n\nDu erhältst als Input eine aktuelle IT-Support-Anfrage mit folgenden Informationen:\n\n- Anfrage:{{ $('IT-Support-Anfrage').item.json.Problem }}\n- Problemzusammenfassung:{{ $json.output.problemZusammenfassung }}\n- Kategorie:{{ $json.output.kategorie }}\n\n\n\nÜber ein Tool kannst du alle archivierten Support-Anfragen aus der angegebenen Kategorie auslesen. Die Archivdaten enthalten unter anderem die originale Anfrage, Problemzusammenfassung, Kategorie, Lösung sowie Ticketnummer.\n\n## Aufgabe\n\nAnalysiere die aktuelle Anfrage und vergleiche sie mit den archivierten Anfragen.\n\n### 1. Archivdaten abrufen\n\nNutze das verfügbare Tool, um die archivierten Anfragen der Kategorie abzurufen, die im Input als `kategorie` angegeben wurde.\n\nBerücksichtige für die Analyse nur Tickets aus dieser Kategorie.\n\n### 2. Bekanntes oder unbekanntes Problem bestimmen\n\nPrüfe, ob das aktuelle Problem bereits im Archiv bekannt ist.\n\nEin Problem gilt als **bekannt**, wenn eine oder mehrere archivierte Anfragen dasselbe oder im Wesentlichen dasselbe technische Problem beschreiben. Dabei müssen die Formulierungen nicht identisch sein. Berücksichtige insbesondere:\n\n* Problemursache bzw. vermutete Ursache\n* betroffenes System oder Produkt\n* konkretes Fehlerbild\n* relevante Symptome\n* technische Zusammenhänge\n\nÄhnliche, aber technisch unterschiedliche Probleme dürfen nicht als bekannt eingestuft werden.\n\nGib das Ergebnis im Feld `bekanntes_problem` als Boolean aus:\n\n* `true`: Das Problem ist im Archiv bereits bekannt.\n* `false`: Das Problem ist im Archiv nicht als dasselbe Problem bekannt.\n\n### 3. Wenn das Problem bekannt ist\n\nWenn `bekanntes_problem = true`:\n\n* Identifiziere die archivierten Anfragen, die dasselbe oder im Wesentlichen dasselbe Problem betreffen.\n* Gib diese Tickets inklusive Ticketnummer, originaler Anfrage, Problemzusammenfassung und Lösung aus.\n* Sortiere die Treffer nach ihrer Relevanz für die aktuelle Anfrage.\n* Gib nur tatsächlich relevante Treffer zurück.\n\n### 4. Wenn das Problem unbekannt ist\n\nWenn `bekanntes_problem = false`:\n\n* Suche innerhalb der archivierten Anfragen nach ähnlichen Problemen.\n* Die ähnlichen Probleme müssen nicht identisch sein, sollten aber technisch oder hinsichtlich der Fehlerbehebung hilfreich sein.\n* Berücksichtige beispielsweise ähnliche Symptome, dasselbe System, dieselbe Software, ähnliche Fehlerursachen oder vergleichbare Lösungsansätze.\n* Gib die relevantesten ähnlichen Tickets inklusive Ticketnummer, originaler Anfrage, Problemzusammenfassung und Lösung aus.\n* Die gefundenen Lösungen sollen als mögliche Hilfestellung für die Bearbeitung des aktuellen Problems dienen.\n* Erfinde keine Lösungen, die nicht aus den Archivdaten hervorgehen.\n\n### 5. Keine Halluzinationen\n\nVerwende ausschließlich Informationen aus:\n\n1. der aktuellen Anfrage und\n2. den vom Archiv-Tool zurückgegebenen Daten.\n\nErfinde keine Ticketnummern, Lösungen, Ursachen oder Archivdaten.\n\nWenn keine relevanten Tickets gefunden werden, gib ein leeres Array zurück.\n\n### 6. Ausgabe\n\nDie Antwort muss **ausschließlich valides JSON** sein und exakt dem vorgegebenen Output-Schema entsprechen.\n\nWenn `bekanntes_problem = true`, verwende `gleiche_probleme` für die gefundenen bekannten Tickets und gib `aehnliche_probleme` als leeres Array aus.\n\nWenn `bekanntes_problem = false`, verwende `aehnliche_probleme` für die gefundenen ähnlichen Tickets und gib `gleiche_probleme` als leeres Array aus.\n\nGib keine zusätzlichen Erklärungen, keinen Markdown-Codeblock und keinen Text außerhalb des JSON-Objekts aus.\n",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        1072,
+        0
+      ],
+      "id": "1a0f933a-8ca6-4eb9-9e21-cb8ebbeeab04",
+      "name": "Vergleich mit Archiv-Anfragen"
+    },
+    {
+      "parameters": {
+        "descriptionType": "manual",
+        "toolDescription": "This is how you get \"Anfragen der gleichen Kategorie aus dem Anfragen-Archiv\"",
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "value": "UBRSYAfJvUxDGalZ",
+          "mode": "list",
+          "cachedResultName": "IT-Support-Anfragen-Archiv",
+          "cachedResultUrl": "/projects/vTXwyz2ECDJVPGHx/datatables/UBRSYAfJvUxDGalZ"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Kategorie",
+              "keyValue": "={{ $('Kategorisierung und Zuordnung').item.json.output.kategorie }}"
+            }
+          ]
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTableTool",
+      "typeVersion": 1.1,
+      "position": [
+        1200,
+        224
+      ],
+      "id": "a38f8a8d-b72e-4cc0-a360-b8805145834c",
+      "name": "Get Archiv-Anfragen mit gleicher Kategorie"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n\"type\": \"object\",\n\"properties\": {\n\"bekanntes_problem\": {\n\"type\": \"boolean\",\n\"description\": \"Gibt an, ob das aktuelle Problem bereits als gleiches oder im Wesentlichen gleiches Problem im Archiv bekannt ist.\"\n},\n\"gleiche_probleme\": {\n\"type\": \"array\",\n\"description\": \"Archivierte Tickets mit demselben oder im Wesentlichen demselben Problem. Bei unbekannten Problemen ist dieses Array leer.\",\n\"items\": {\n\"type\": \"object\",\n\"properties\": {\n\"ticketnummer\": {\n\"type\": \"string\",\n\"description\": \"Ticketnummer des archivierten Tickets.\"\n},\n\"originale_anfrage\": {\n\"type\": \"string\",\n\"description\": \"Originale Anfrage des archivierten Tickets.\"\n},\n\"problemzusammenfassung\": {\n\"type\": \"string\",\n\"description\": \"Zusammenfassung des Problems aus dem archivierten Ticket.\"\n},\n\"loesung\": {\n\"type\": \"string\",\n\"description\": \"Im archivierten Ticket dokumentierte Lösung.\"\n}\n},\n\"required\": [\n\"ticketnummer\",\n\"originale_anfrage\",\n\"problemzusammenfassung\",\n\"loesung\"\n],\n\"additionalProperties\": false\n}\n},\n\"aehnliche_probleme\": {\n\"type\": \"array\",\n\"description\": \"Archivierte Tickets mit ähnlichen Problemen, deren Lösungen bei der Bearbeitung des aktuellen Problems hilfreich sein können. Bei bekannten Problemen ist dieses Array leer.\",\n\"items\": {\n\"type\": \"object\",\n\"properties\": {\n\"ticketnummer\": {\n\"type\": \"string\",\n\"description\": \"Ticketnummer des archivierten Tickets.\"\n},\n\"originale_anfrage\": {\n\"type\": \"string\",\n\"description\": \"Originale Anfrage des archivierten Tickets.\"\n},\n\"problemzusammenfassung\": {\n\"type\": \"string\",\n\"description\": \"Zusammenfassung des ähnlichen Problems.\"\n},\n\"loesung\": {\n\"type\": \"string\",\n\"description\": \"Im archivierten Ticket dokumentierte Lösung, die als Hilfestellung dienen kann.\"\n}\n},\n\"required\": [\n\"ticketnummer\",\n\"originale_anfrage\",\n\"problemzusammenfassung\",\n\"loesung\"\n],\n\"additionalProperties\": false\n}\n}\n},\n\"required\": [\n\"bekanntes_problem\",\n\"gleiche_probleme\",\n\"aehnliche_probleme\"\n],\n\"additionalProperties\": false\n}\n"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        1360,
+        176
+      ],
+      "id": "946b6e52-e2a6-4da9-825d-e31814faa8b1",
+      "name": "Structured Output Parser1"
+    },
+    {
+      "parameters": {
+        "fromEmail": "IT-Support<tadea.s@gmx.de>",
+        "toEmail": "={{ $('IT-Support-Anfrage').item.json['E-Mail'] }}",
+        "subject": "=IT-Support Ticketnummer:  {{ $('Ticket-ID').item.json.TicketID }}",
+        "emailFormat": "text",
+        "text": "={{ $json.output }}\n\n\n\n(Es handelt sich um ein bereits bekanntes Problem, daher wurde diese Email automatisch generiert. Sollte das Problem weiter bestehen oder falsch verstanden worden sein, antworten sie auf diese Mail. Ihr Ansprechpartner ist im CC.)",
+        "options": {
+          "ccEmail": "={{ $('Kategorisierung und Zuordnung').item.json.output.zustaendigePerson }}<tante-teddy@gmx.de>"
+        }
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        1904,
+        -208
+      ],
+      "id": "0dbe80fe-46cf-4076-a6db-3a82c63b0e6a",
+      "name": "automatische Antwort",
+      "webhookId": "59a2e311-0f3f-4158-98aa-d7246bc27ccd",
+      "credentials": {
+        "smtp": {
+          "id": "QeQUjRMlAXPy3bfA",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "update",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Gw2uOHZBbZHjHBuy",
+          "mode": "list",
+          "cachedResultName": "aktuelle_IT-Support-Anfragen",
+          "cachedResultUrl": "/projects/vTXwyz2ECDJVPGHx/datatables/Gw2uOHZBbZHjHBuy"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "TicketID",
+              "keyValue": "={{ $('Ticket-ID').item.json.TicketID }}"
+            }
+          ]
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Status": "automatische Antwort",
+            "Loesungsansatz": "={{ $('AI Agent3').item.json.output }}",
+            "bekanntesProblem": true
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "TicketID",
+              "displayName": "TicketID",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "KontaktEmail",
+              "displayName": "KontaktEmail",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Anfrage",
+              "displayName": "Anfrage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "ProblemZusammenfassung",
+              "displayName": "ProblemZusammenfassung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Kategorie",
+              "displayName": "Kategorie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "zustaendigePerson",
+              "displayName": "zustaendigePerson",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Priorisierung",
+              "displayName": "Priorisierung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": true
+            },
+            {
+              "id": "Status",
+              "displayName": "Status",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Loesungsansatz",
+              "displayName": "Loesungsansatz",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "bekanntesProblem",
+              "displayName": "bekanntesProblem",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "boolean",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2064,
+        -176
+      ],
+      "id": "c928e1ac-1df7-42d3-842d-9b9c27eb22fb",
+      "name": "Update Anfragestatus"
+    },
+    {
+      "parameters": {
+        "fromEmail": "IT-Support<tadea.s@gmx.de>",
+        "toEmail": "={{ $('Kategorisierung und Zuordnung').item.json.output.zustaendigePerson }}<tante-teddy@gmx.de>",
+        "subject": "=Neue IT-Support-Anfrage, Ticketnummer:  {{ $('Ticket-ID').item.json.TicketID }}, Priorisierung {{ $('Kategorisierung und Zuordnung').item.json.output.priorisierungsscore }}",
+        "emailFormat": "text",
+        "text": "=Hallo {{ $('Kategorisierung und Zuordnung').item.json.output.zustaendigePerson }},\n\nIhnen wurde eine neue IT-Support-Anfrage der Kategorie {{ $('Kategorisierung und Zuordnung').item.json.output.kategorie }} mit Priorisierung {{ $('Kategorisierung und Zuordnung').item.json.output.priorisierungsscore }} zugeordnet.\n\nAnfrage:\n{{ $('IT-Support-Anfrage').item.json.Problem }}\n\nProblemzusammenfassung:\n{{ $('Kategorisierung und Zuordnung').item.json.output.problemZusammenfassung }}\n\nKontaktemail: {{ $('IT-Support-Anfrage').item.json['E-Mail'] }}\n\nHier ist ein aus ähnlichen Archiv-Anfragen gewonnener Lösungsvorschlag:\n{{ $json.output }}\n\nViel Erfolg bei der Bearbeitung!",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2.1,
+      "position": [
+        2048,
+        64
+      ],
+      "id": "eb31ae31-b765-4331-8aa1-82a6b585d513",
+      "name": "Weiterleitung",
+      "webhookId": "59a2e311-0f3f-4158-98aa-d7246bc27ccd",
+      "credentials": {
+        "smtp": {
+          "id": "QeQUjRMlAXPy3bfA",
+          "name": "SMTP account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Lösung",
+              "fieldName": "Loesung",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {
+          "buttonLabel": "Ticket schließen"
+        }
+      },
+      "type": "n8n-nodes-base.form",
+      "typeVersion": 2.5,
+      "position": [
+        2384,
+        -80
+      ],
+      "id": "981296dc-e490-4b36-bf31-97c445a2fc13",
+      "name": "Ticket schließen",
+      "webhookId": "99e22d10-6074-46e2-b613-a03c3578d973"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "value": "UBRSYAfJvUxDGalZ",
+          "mode": "list",
+          "cachedResultName": "IT-Support-Anfragen-Archiv",
+          "cachedResultUrl": "/projects/vTXwyz2ECDJVPGHx/datatables/UBRSYAfJvUxDGalZ"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Loesung": "={{ $json.Loesung }}",
+            "Datum_Ticketschliessung": "={{ $json.submittedAt }}",
+            "Datum_Anfrageneingang": "={{ $('IT-Support-Anfrage').item.json.submittedAt }}",
+            "Kategorie": "={{ $('Kategorisierung und Zuordnung').item.json.output.kategorie }}",
+            "Problemzusammenfassung": "={{ $('Kategorisierung und Zuordnung').item.json.output.problemZusammenfassung }}",
+            "Ticketnummer": "={{ $('Ticket-ID').item.json.TicketID }}",
+            "originale_Anfrage": "={{ $('IT-Support-Anfrage').item.json.Problem }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Ticketnummer",
+              "displayName": "Ticketnummer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "originale_Anfrage",
+              "displayName": "originale_Anfrage",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Problemzusammenfassung",
+              "displayName": "Problemzusammenfassung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Kategorie",
+              "displayName": "Kategorie",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Loesung",
+              "displayName": "Loesung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Datum_Anfrageneingang",
+              "displayName": "Datum_Anfrageneingang",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "Datum_Ticketschliessung",
+              "displayName": "Datum_Ticketschliessung",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "dateTime",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2672,
+        -64
+      ],
+      "id": "c9f0566f-9f13-41e4-a89d-27f7916a11b8",
+      "name": "add to Anfragen Archiv"
+    },
+    {
+      "parameters": {
+        "operation": "deleteRows",
+        "dataTableId": {
+          "__rl": true,
+          "value": "Gw2uOHZBbZHjHBuy",
+          "mode": "list",
+          "cachedResultName": "aktuelle_IT-Support-Anfragen",
+          "cachedResultUrl": "/projects/vTXwyz2ECDJVPGHx/datatables/Gw2uOHZBbZHjHBuy"
+        },
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "TicketID",
+              "keyValue": "={{ $json.Ticketnummer }}"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2832,
+        -64
+      ],
+      "id": "e050541f-d82b-4bfb-bbaa-1d91b001c510",
+      "name": "Delete from Anfragentabelle"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "IT-Support-Anfrage": {
+      "main": [
+        [
+          {
+            "node": "Ticket-ID",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If bekanntes Problem": {
+      "main": [
+        [
+          {
+            "node": "AI Agent3",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "AI Agent2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent2": {
+      "main": [
+        [
+          {
+            "node": "Weiterleitung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent3": {
+      "main": [
+        [
+          {
+            "node": "automatische Antwort",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ticket-ID": {
+      "main": [
+        [
+          {
+            "node": "Kategorisierung und Zuordnung",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Eingangsbestätigung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Kategorisierung und Zuordnung",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Kategorisierung und Zuordnung",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model1": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Vergleich mit Archiv-Anfragen",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent3",
+            "type": "ai_languageModel",
+            "index": 0
+          },
+          {
+            "node": "AI Agent2",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Kategorisierung und Zuordnung": {
+      "main": [
+        [
+          {
+            "node": "Vergleich mit Archiv-Anfragen",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "add to Anfragentabelle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Vergleich mit Archiv-Anfragen": {
+      "main": [
+        [
+          {
+            "node": "If bekanntes Problem",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Archiv-Anfragen mit gleicher Kategorie": {
+      "ai_tool": [
+        [
+          {
+            "node": "Vergleich mit Archiv-Anfragen",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser1": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Vergleich mit Archiv-Anfragen",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "automatische Antwort": {
+      "main": [
+        [
+          {
+            "node": "Update Anfragestatus",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Update Anfragestatus": {
+      "main": [
+        [
+          {
+            "node": "Ticket schließen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Weiterleitung": {
+      "main": [
+        [
+          {
+            "node": "Ticket schließen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ticket schließen": {
+      "main": [
+        [
+          {
+            "node": "add to Anfragen Archiv",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "add to Anfragen Archiv": {
+      "main": [
+        [
+          {
+            "node": "Delete from Anfragentabelle",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "5632d312-df6d-42fa-af40-cf19d94932b7",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5ca217b3e87126f945cd7d00ec81f87adfa579c39b6f433f197a520574173efd"
+  },
+  "nodeGroups": [],
+  "id": "JekotvDXUwlTLgqj",
+  "tags": []
+}
